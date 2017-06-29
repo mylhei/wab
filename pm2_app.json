@@ -1,0 +1,23 @@
+/**
+ * Created by leiyao on 16/4/28.
+ "NODE_ENV": "production"
+ */
+{
+  "apps": [
+    {
+      "name": "wab_app",
+      "script": "bin/www",
+      "env": {
+        "PORT": 3000,
+        "NODE_ENV": "development"
+      },
+      "log_date_format": "YYYY-MM-DD HH:mm:SS",
+      "error_file": "/letv/logs/wab/wab-err.log",
+      "out_file": "/letv/logs/wab/wab-out.log",
+      "pid_file": "/letv/logs/wab/wab.pid",
+      "exec_mode": "cluster_mode",
+      "instances": 0,
+      "watch": false
+    }
+  ]
+}

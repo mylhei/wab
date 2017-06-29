@@ -1,0 +1,109 @@
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="bg-light lter b-b wrapper-md">
+    <form class="" role="form">
+        <div class="col-md-3 padding-xs-vertical" style="padding-left: 0;">
+            <input type="text" ng-model="searchText" class="form-control" placeholder="输入ID或名称">
+        </div>
+        <div class="col-md-3 padding-xs-vertical" style="padding-left: 0;">
+            <div class="input-group m-b">
+                <div class="input-group-btn dropdown" dropdown="">
+                    <button type="button" class="btn btn-default" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">{{search_type||'定向条件'}}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="search_type='直播'">直播</a></li>
+                        <li><a href="" ng-click="search_type='专辑'">专辑</a></li>
+                        <li><a href="" ng-click="search_type='单集'">单集</a></li>
+                        <li class="divider"></li>
+                    </ul>
+                </div><!-- /btn-group -->
+                <div>
+                <angucomplete
+                        id="selectedStream"
+                        placeholder="搜索定向条件"
+                        pause="100"
+                        selectedobject="selectedStream"
+                        url="/api/get_streams/"
+                        titlefield="id,name"
+                        minlength="2"
+                        inputclass="form-control form-control-small"
+                        matchclass="highlight"/>
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+    <button ui-sref="app.order.create" class="btn m-b-xs w-xs btn-info">新 建</button>
+</div>
+<div class="wrapper-md">
+    <div class="row">
+        <div class="{{detailMessageClass}}">
+            <div class="panel panel-default">
+
+                <div class="table-responsive">
+                    <div ng-grid="gridOptions" ng_grid_filter_select_column="2" style="min-height:400px"></div>
+                    <p class="pull-right" style="padding-right:20px;">
+                        <!--<button class="btn m-b-xs btn-sm btn-default" ng-click="viewOrders()"><i class="fa fa-hand-o-right"></i>查看关联订单</button>-->
+                        <button class="btn m-b-xs btn-sm btn-danger" ng-click="removeItem()"><i
+                                class="fa fa-remove"></i>删除
+                        </button>
+                        <button class="btn m-b-xs btn-sm btn-success" ng-click="changeStatus()"
+                                ng-if="orderSelections[0].state==1 || orderSelections[0].state==3"><i
+                                class="fa fa-arrow-circle-o-up"></i>立即上线
+                        </button>
+                        <button class="btn btn-sm btn-success m-b-xs" ng-if="orderSelections[0].orderType != 2" ng-click="copyOrder()"><i class="fa fa-files-o"></i>复制</button>
+                        <button class="btn m-b-xs btn-sm btn-info" ng-click="changeStatus()"
+                                ng-if="orderSelections[0].state==2"><i class="fa fa-arrow-circle-o-down"></i>立即下线
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div ng-show="isDeitailMessageShow" class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>订单描述</strong>
+                </div>
+                <div class="panel-body" style="word-break: break-all; word-wrap:break-word;">
+                    <div ng-show="orderSelections[0]" style="word-break: break-all; word-wrap:break-word;">{{orderDescription||'未填写'}}
+                        <h5>广告:<a ui-sref="app.ad.detail({id:orderSelections[0].ad_id})">{{orderSelections[0].ad_id + ":"+ orderSelections[0].adName}}</a></h5>
+                        <h5>开始时间:{{orderSelections[0].startTime}}</h5>
+                        <h5>结束时间:{{orderSelections[0].endTime}}</h5>
+                        <h5>开始时间轴:{{orderSelections[0].offset}}</h5>
+                        <h5>持续时长:{{orderSelections[0].duration}}</h5>
+                        <div ng-if="orderSelections[0].orderType!=0">
+                          打点位置:
+                            <h6>X:{{orderSelections[0].coordinate.x}}%</h6>
+                            <h6>Y:{{orderSelections[0].coordinate.y}}%</h6>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>定向条件</strong>
+                </div>
+                <div class="panel-body" style="word-break: break-all; word-wrap:break-word;">
+                    <div ng-bind-html="orderStream"></div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>操作日志</strong>
+                </div>
+                <div class="panel-body" style="word-break: break-all; word-wrap:break-word;">
+                    <accordion close-others="oneAtATime">
+                        <accordion-group ng-repeat="node in handleLog" heading="{{node.update_time}}">
+                            {{node.nickname}}:{{node.target_state}}<br/>{{node.content}}
+                        </accordion-group>
+                        <a class="btn btn-xs pull-right" ng-click="seeMoreLog()">更多</a>
+                    </accordion>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

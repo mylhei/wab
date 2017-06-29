@@ -1,0 +1,66 @@
+<!--<div class="bg-light lter b-b wrapper-md">-->
+<!--<h1 class="m-n font-thin h3">创意模版</h1>-->
+<!--</div>-->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+<div class="wrapper-md">
+    <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="forma" class="form-horizontal form-validation">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>模版信息</strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">模版名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" placeholder="请填写模版名称" ng-model="form.name" required >
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">平台</label>
+                                <div class="col-sm-6">
+                                    <select ng-model="form.platform" class="form-control m-b" ng-options="node.id as node.name for node in platform_list" required>
+                                    </select>
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">动态表单</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" rows="6" placeholder="请填写JSON格式" ng-model="form.form"></textarea>
+                                </div>
+                                <div class="col-sm-3">
+                                    <script type="text/ng-template" id="tmp_viewform">
+                                        <div ng-include="'tpl/template/tmp_viewform.html'"></div>
+                                    </script>
+                                    <button class="btn btn-success" ng-click="open('lg')">预览动态表单</button>
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" rows="5" placeholder="请填写备注信息" ng-model="form.description"></textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <footer class="panel-footer text-right bg-light lter">
+                            <span class="label bg-danger center" ng-show="forma.$invalid">请检查输入的信息!!!</span>
+
+                            <button type="button" class="btn btn-default" ui-sref="app.creative.list">返回</button>
+                            <button type="submit" class="btn btn-success" ng-disabled="forma.$invalid" ng-click="save()">保存</button>
+                        </footer>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,155 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+<div>
+<div class="row" ng-init="getVote()">
+    <div class="col-sm-12">
+        <form name="forma" id="vote_form" class="form-horizontal form-validation">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>投票活动详情</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="v_title" class="col-sm-3 control-label">投票名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="v_title" id="v_title" ng-model="form.v_title" placeholder="请输入投票名称" class="form-control" required>
+                        </div>
+                        <label class="control-label text-danger" style="font-size: larger;">*</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            是否单选
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_isSingle" id="v_isSingle1" ng-model="form.v_isSingle" value="1" ng-checked="true">是
+                            <input type="radio" name="v_isSingle" id="v_isSingle2" ng-model="form.v_isSingle" value="0" >否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            是否重复                        
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_canRepeat" id="v_canRepeat1" ng-model="form.v_canRepeat" ng-value="1" value="1" ng-checked="true">是
+                            <input type="radio" name="v_canRepeat" id="v_canRepeat2" ng-model="form.v_canRepeat" ng-value="0" value="0" >否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            计算优化                        
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_optimize" id="v_optimize" ng-model="form.v_optimize" ng-value="1" value="1">是
+                            <input type="radio" name="v_optimize" id="v_optimize" ng-model="form.v_optimize" ng-value="0" value="0"  ng-checked="true">否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">投票选项</label>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4" ng-repeat="v_option in form.v_options  track by $index">
+                                    <div style="height:280px;width: 180px;position: relative;">
+                                        <div style="height: 180px;" class="img-thumbnail">
+                                        <img src="{{v_option.v_imgurl}}" class=" img-responsive center-block">
+                                        </div>
+                                        <i ng-if="v_option.is_right_answer=='1'" class="fa fa-check text-success" style="font-size: 40px;position: absolute;top:0;right: 0;"></i>
+                                        <div class="caption text-center">
+                                            <div style="margin-top: 10px;" ng-class="{true:'text-danger',false:'text-info'}[v_option.is_right_answer=='1']">{{v_option.v_name}}</div>
+                                            <div class="btn-group">
+                                              <button type="button"  ng-click="edit_v_option($index)" class="btn btn-info">编辑</button>
+                                              <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                                <span class="caret"></span>
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                              </button>
+                                              <ul class="dropdown-menu" role="menu">
+                                                <li ng-if="v_option.is_right_answer=='0'"><a ng-click="set_right_answer($index)">设为正确答案</a></li>
+                                                <li ng-if="v_option.is_right_answer=='1'"><a ng-click="unset_right_answer($index)">取消正确答案</a></li>
+                                                <li><a ng-click="remove($index)">删除</a></li>
+                                              </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix visible-xs-block"></div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="thumbnail center-block">
+                                        <button class="btn btn-info" ng-click="open_file_upload_modal()">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer text-right bg-light lter">
+                    <span class="label bg-danger center" ng-show="forma.$invalid">请检查输入的信息!!!</span>
+                    <button type="submit" class="btn btn-success" ng-disabled="forma.$invalid" ng-click="save_activity()">保存</button>
+                </footer>
+            </div>
+        </form>
+        <div class="modal fade" id="file_modal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+            <form id="modal_form">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">添加投票选项</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="v_name" class="col-sm-3 control-label">选项名称</label>
+                            <div class="col-sm-6 input-group">
+                                <input type="text" name="v_name" value="{{v_option.v_name}}" id="v_name" ng-model="v_option.v_name" placeholder="请输入投票选项名称" class="form-control">
+                            </div>
+                        </div>
+
+                        <div ng-controller="FileUploadSimpleCtrl">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">选项图片</label>
+                            <div class="col-sm-6 input-group" >
+                                <input type="text" value="{{v_option.v_imgurl}}" class="form-control" data-index="v_imgurl" placeholder="请填入选项的图片地址" ng-model="v_option.v_imgurl" name="v_imgurl" id="v_imgurl" />
+                                <div class="input-group-addon">
+                                    <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/jpg,image/png,image/gif" >
+                                    <i class="fa fa-upload"></i>
+                                    </div>
+                                    <input type="file" ng-click="select_file('v_imgurl')" nv-file-select="" uploader="uploader" style="width:27.5px;opacity: 0;margin-top:-15px;" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/jpg,image/png,image/gif">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div ng-controller="FileUploadSimpleCtrl">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">选项小图标</label>
+                            <div class="col-sm-6 input-group" >
+                                <input value="{{v_option.v_icon}}" type="text" class="form-control" data-index="v_icon" placeholder="请填入选项小图标" ng-model="v_option.v_icon" name="v_icon" id="v_icon" />
+                                <div class="input-group-addon">
+                                    <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/jpg,image/png,image/gif" >
+                                    <i class="fa fa-upload"></i>
+                                    </div>
+                                    <input type="file" ng-click="select_file('v_icon')" nv-file-select="" uploader="uploader" style="width:27.5px;opacity: 0;margin-top:-15px;" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/jpg,image/png,image/gif">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label for="v_icon" class="col-sm-3 control-label">选项小图标</label>
+                            <div class="col-sm-6 input-group">
+                                <input type="file" name="v_icon" id="v_icon" ng-model="form.v_options.v_icon" placeholder="请输入投票选项名称" class="form-control">
+                            </div>
+                        </div>-->
+                    </div>
+                    <div class="modal-footer">
+                    <div class="text-center center-block">
+                        <button type="button" class="btn btn-info" ng-click="save_v_option()">确定</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,229 @@
+
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+    <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="forma" class="form-horizontal form-validation">
+                <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品来源</label>
+                                <div class="col-sm-4">
+                                    <div class="btn-group m-r" ng-init="form.goods_type = '1'">
+                                        <label class="btn btn-default" ng-model="form.goods_type"
+                                               btn-radio="'1'" style="z-index: 0;" >阿里</label>
+                                        <label class="btn btn-default" ng-model="form.goods_type" btn-radio="'2'" style="z-index: 0;" >乐视商城</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-show="form.goods_type == '1'">
+                                <label class="col-sm-2 control-label">商品链接</label>
+                                <div class="col-sm-8">
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="请填写商品链接，然后点击获取" ng-model="form.item_url" name="item_url" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="iteminfo()">获取</button>
+                                    </span>
+                                  </div>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                                <label  ng-show="forma.item_url.$dirty && forma.item_url.$invalid"><span ng-show="forma.item_url.$error.required"  style="vertical-align: super;" class="text-danger">请填写商品链接</span></label>
+                            </div>
+                            <div class="form-group" ng-show="form.goods_type == '2'">
+                                <label class="col-sm-2 control-label">spuNo</label>
+                                <div class="col-sm-8">
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="请填写乐视商城商品spuNo，然后点击获取" ng-model="form.spuNo" name="spuNo" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="iteminfo()">获取</button>
+                                    </span>
+                                  </div>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                                <label  ng-show="forma.item_url.$dirty && forma.item_url.$invalid"><span ng-show="forma.item_url.$error.required"  style="vertical-align: super;" class="text-danger">请填写商品链接</span></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品标题</label>
+                                <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8">
+                                    <input type="text" class="form-control"  ng-model="goods.title" name="title" required/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品类型</label>
+                                <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8">
+                                    <input type="text" class="form-control"  ng-model="goods.item_type" name="title" required disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品原价</label>
+                                <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"  ng-model="goods.o_price" name="title" required disabled />
+                                        <div class="input-group-addon">￥</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品现价</label>
+                                <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control"  ng-model="goods.prom_price" name="title" required disabled />
+                                        <div class="input-group-addon">￥</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">商品图片</label>
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4" ng-repeat="pic in goods.pic_urls  track by $index">
+                                            <div class="thumbnail" style="height:300px;">
+                                                <div style="height: 200px;" >
+                                                <img src="{{pic}}" class="img-responsive center-block">
+                                                </div>
+                                                <div class="caption text-center">
+                                                    <div class="text-info">要下载图片，右键选择“图片另存为”</div>
+                                                    <button ng-click="remove_goods_pic($index)" class="btn btn-danger">移除</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix visible-xs-block"></div>
+                                        <div class="col-sm-6 col-md-4">
+                                            <div class="thumbnail center-block">
+                                                <button class="btn btn-info" ng-click="open_file_upload_modal()">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </div>
+                                            <div class="modal fade" id="file_modal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">上传图片</h4>
+                                                        </div>
+                                                        <!--上传图片模态框-->
+                                                        <div class="modal-body">
+                                                            <div class="hbox hbox-auto-xs hbox-auto-sm"  nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+                                                                <div class="col w-lg bg-light b-r bg-auto">
+                                                                    <div class="wrapper-md dker b-b">
+                                                                        <h3 class="m-n font-thin">选择文件</h3>
+                                                                    </div>
+                                                                    <div class="wrapper-md">
+                                                                        <p class="m-t-md">选择文件,或将文件拖动到下框中</p>
+                                                                        <input type="file" nv-file-select="" uploader="uploader" />
+                                                                        <br>
+                                                                        <div ng-show="uploader.isHTML5" class="m-b-md">
+                                                                            <div nv-file-drop="" uploader="uploader" options="{ url: '/upload' }">
+                                                                                <div nv-file-over="" uploader="uploader" over-class="b-danger" class="b-a b-2x b-dashed wrapper-lg lter text-center">
+                                                                                    拖动文件到这里上传
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="wrapper-md bg-light dk b-b">
+                                                                        <span class="pull-right m-t-xs">上传队列长度: <b class="badge bg-info">{{ uploader.queue.length }}</b></span>
+                                                                        <h3 class="m-n font-thin">上传队列</h3>
+                                                                    </div>
+                                                                    <div class="wrapper-md">
+                                                                        <table class="table bg-white-only b-a">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th width="50%">文件名称</th>
+                                                                                <th ng-show="uploader.isHTML5">文件大小</th>
+                                                                                <th ng-show="uploader.isHTML5">上传进度</th>
+                                                                                <th>状态</th>
+                                                                                <th>操作</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                            <tr ng-repeat="item in uploader.queue">
+                                                                                <td><strong>{{ item.file.name }}</strong></td>
+                                                                                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                                                <td ng-show="uploader.isHTML5">
+                                                                                    <div class="progress progress-sm m-b-none m-t-xs">
+                                                                                        <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                                    <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                                    <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                                                                                </td>
+                                                                                <td nowrap>
+                                                                                    <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                                        上传
+                                                                                    </button>
+                                                                                    <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                                        取消
+                                                                                    </button>
+                                                                                    <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                                                                                        移除
+                                                                                    </button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <div>
+                                                                            <div>
+                                                                                <p>上传进度:</p>
+                                                                                <div class="progress bg-light dker" style="">
+                                                                                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <button type="button" class="btn btn-addon btn-success" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                                                                <i class="fa fa-arrow-circle-o-up"></i> 全部上传
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-addon btn-danger" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                                                                <i class="fa fa-trash-o"></i> 全部移除
+                                                                            </button>
+
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--上传文件模块框结束-->
+                                                        <div class="modal-footer">
+                                                        <div class="text-center center-block">
+                                                            <button type="button" class="btn btn-info" ng-click="close_file_upload_modal()">确定</button>
+                                                        </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <footer class="panel-footer">
+                                <div class="row">
+                                    <div class="col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <input type="button" class="btn btn-success" value="保存" ng-click="update()"/>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                    <input type="button" class="btn btn-danger" value="删除" ng-click="delete()"/>
+                                    </div>
+                                </div>
+                            </footer>
+                            <div class="form-group">
+                                <pre style="background: none;border:none">
+
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

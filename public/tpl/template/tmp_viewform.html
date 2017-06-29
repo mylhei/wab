@@ -1,0 +1,366 @@
+<div id="form_preview" class="row">
+    <div class="col-sm-12">
+        {{trackings}}
+        <div class="panel panel-default">
+            <div ng-show="showTitle" class="panel-heading font-bold">
+                <h4>{{title}}</h4>
+            </div>
+            <div class="panel-body">
+                <form class="bs-example form-horizontal ng-pristine form-validation" name="dynamicForm">
+                    <div ng-repeat="item in formList">
+                        <div ng-switch="item.type">
+                            <!--隐藏-->
+                            <div class="form-group" ng-switch-when="HiddenItem">
+                                <input type="hidden" name="{{item.name}}" value="{{item.value}}" />
+                            </div>
+                            <!--输入框-->
+                            <div class="form-group" ng-switch-when="StringTextItem">
+                                <label class="col-lg-2 control-label">{{item.title}}</label>
+                                <div ng-class="{'col-lg-9':item.allowUpload,'col-lg-10':!item.allowUpload}">
+                                    <input ng-if="item.required" class="form-control" tooltip="{{item.description}}{{(item.canExpose?'(可曝光)':'')+(item.canClick?'(可点击)':'')}}" tooltip-trigger="mouseenter" name="{{item.name}}" type="text" placeholder="{{item.eg}}" ng-trim="true" data-index="{{item.name}}" ng-pattern="item.pattern" required ng-model="this.formContent[item.name]">
+                                    <input ng-if="!item.required" class="form-control" tooltip="{{item.description}}" tooltip-trigger="mouseenter" name="{{item.name}}" type="text" placeholder="{{item.eg}}" ng-trim="true" data-index="{{item.name}}" ng-pattern="item.pattern" ng-model="this.formContent[item.name]">
+                                </div>
+                                <div class="col-lg-1" ng-if="item.allowUpload">
+                                    <div ng-controller="FileUploadSimpleCtrl">
+                                        <div style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;">
+                                            <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/jpg,image/png,image/gif" class="b-a b-2x b-dashed lter text-center">
+                                                <i class="fa fa-upload"></i>
+                                            </div>
+                                        </div>
+                                        <input type="file" ng-model="this.formContent[item.name]" ng-click="select_file(item.name)" nv-file-select="" uploader="uploader" style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;font-size:0;outline: 0;opacity: 0" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/jpg,image/png,image/gif">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--选择框-->
+                            <div class="form-group" ng-switch-when="SelectItem">
+                                <label class="col-lg-2 control-label">{{item.title}}</label>
+                                <div class="col-lg-10" ng-init="selectList = convertArr2Obj(item.name,item.values,item.texts);this.formContent[item.name]=this.formContent[item.name]||selectList[0].value">
+                                    <select name="{{item.name}}" class="form-control" ng-model="this.formContent[item.name]" tooltip="{{item.description}}{{(item.canExpose?'(可曝光)':'')+(item.canClick?'(可点击)':'')}}" tooltip-trigger="mouseenter" ng-options="node.value as node.text for node in selectList" required>
+                                        <!--<option ng-repeat="i in item.values" value="{{i}}">-->
+                                        <!--{{item.texts[$index]}}-->
+                                        <!--</option>-->
+                                    </select>
+                                </div>
+                            </div>
+                            <!--列表类-->
+                            <div class="form-group" ng-switch-when="StringTextList" ng-controller="MultiTextboxCtrl" ng-init="init(item)">
+                                <label class="col-lg-2 control-label">{{item.title}}</label>
+                                <div class="col-lg-10">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body" tooltip="{{item.description}}{{(item.canExpose?'(可曝光)':'')+(item.canClick?'(可点击)':'')}}" tooltip-trigger="mouseenter">
+                                            <div class="row" ng-repeat="tbox in formContent[item.name]">
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" tooltip="{{item.title+'-'+($index+1)}}" tooltip-trigger="mouseenter" name="{{item.name}}" type="text" placeholder="{{item.eg}}" ng-trim="true" ng-required="item.required" ng-pattern="item.pattern" data-index="{{item.name+'-'+$index}}" data-title="{{item.title+'-'+($index+1)}}" data-canExpose="{{item.canExpose}}" data-canClick="{{item.canClick}}" value="{{tbox.data}}">
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <a ng-if="$index == 0" type="button" class="btn m-b-xs btn-success" ng-click="addTextBox(item,this)"><i class="fa fa-plus"></i>
+                                                    </a>
+                                                    <a ng-if="$index > 0" type="button" class="btn m-b-xs btn-danger" ng-click="removeTextBox(item,this,$index)"><i
+                                                            class="fa fa-remove"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-lg-1" ng-if="item.allowUpload">
+                                                    <div ng-controller="FileUploadSimpleCtrl">
+                                                        <div style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;">
+                                                            <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/*" class="b-a b-2x b-dashed lter text-center">
+                                                                <i class="fa fa-upload"></i>
+                                                            </div>
+                                                        </div>
+                                                        <input type="file" ng-click="select_file(item.name+'-'+$index)" nv-file-select="" uploader="uploader" style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;font-size:0;outline: 0;opacity: 0" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/*">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-switch-when="CheckBoxList">
+                                <label class="col-lg-2 control-label">{{item.title}}</label>
+                                <div class="col-lg-10">
+                                    <label class="checkbox-inline i-checks" ng-repeat="cbox in item.values">
+                                        <input name="{{cbox.name}}" type="checkbox" ng-model="this.formContent[item.name][$index].data" />
+                                        <i></i> {{cbox.title}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="" ng-switch-when="Ali_Goods_Select_Item">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">{{item.title}}</label>
+                                    <div class="col-lg-10">
+                                        <ui-select ng-model="ali_data.selected" theme="bootstrap">
+                                            <ui-select-match placeholder="选择阿里百川商品">{{$select.selected.title}}</ui-select-match>
+                                            <ui-select-choices repeat="item in ali_goods | filter: $select.search">
+                                                <span ng-bind-html="item.title | highlight: $select.search"></span>
+                                                <small ng-bind-html="item.item_id | highlight: $select.search"></small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品ID</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_id" type="text" readonly required ng-model="ali_data.selected.item_id" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">前端显示标题</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_title" type="text" required ng-value="ali_data.selected.title" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品原价</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_price_raw" type="text" readonly required ng-model="ali_data.selected.o_price" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品现价</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_price_now" type="text" readonly required ng-model="ali_data.selected.prom_price" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品链接</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_trace_url" type="text" readonly required ng-model="ali_data.selected.trace_url" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-repeat="ali_pic_item in ali_data.selected.pic_urls" ng-init="this.ali_pic[$index] = ali_pic_item">
+                                    <label class="col-lg-2 control-label">商品图片{{$index+1}}</label>
+                                    <div class="col-lg-9">
+                                        <input name="goods_details" tooltip-html-unsafe="<img src='{{this.ali_pic[$index]}}' class='thumbnail' style='width:90px;' />" type="text" data-index="{{'ali_pic_item_'+$index}}" required ng-model="this.ali_pic[$index]" class="form-control" readonly />
+                                    </div>
+                                    <!--<div class="col-lg-1">
+                                        <div ng-controller="FileUploadSimpleCtrl">
+                                            <div style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;">
+                                                <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/*" class="b-a b-2x b-dashed lter text-center">
+                                                    <i class="fa fa-upload"></i>
+                                                </div>
+                                            </div>
+                                            <input type="file" ng-click="select_file('ali_pic_item_'+$index)" nv-file-select="" uploader="uploader" style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;font-size:0;outline: 0;opacity: 0" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/*">
+                                        </div>
+                                    </div>-->
+                                    <div class="col-lg-1">
+                                        <a class="fa fa-play" tooltip-html-unsafe="<img src='{{this.ali_pic[$index]}}' class='thumbnail' style='width:90px;' />" style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;" ng-click="preview(this.ali_pic[$index])"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="" ng-switch-when="Lebuy_Goods_Select_Item">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">{{item.title}}</label>
+                                    <div class="col-lg-10">
+                                        <ui-select ng-model="lebuy_goods.selected" theme="bootstrap">
+                                            <ui-select-match placeholder="选择商品">{{$select.selected.sku_name}}</ui-select-match>
+                                            <ui-select-choices repeat="item in lebuy_goods " refresh="searchLeBuyGoods($select.search)">
+                                                <span ng-bind-html="item.sku_name | highlight: $select.search"></span>
+                                                <small ng-bind-html="item._id | highlight: $select.search"></small>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">product_id</label>
+                                    <div class="col-lg-10">
+                                        <input type="hidden" name="_id"  ng-model="lebuy_goods.selected._id" value="{{lebuy_goods.selected._id}}">
+                                        <input name="product_id" type="text" readonly required ng-model="lebuy_goods.selected.product_id" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" >goods_id(sku_no)</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_id" type="text" readonly required ng-model="lebuy_goods.selected.sku_no" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-lg-2 control-label">product_type</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" name="product_type" type="text" readonly required ng-value="lebuy_goods.selected.product_type" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-lg-2 control-label">category_id</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" name="category_id" type="text" readonly required ng-value="lebuy_goods.selected.category_id" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="" class="col-lg-2 control-label">have_mmsid</label>
+                                    <div class="col-lg-10">
+                                        <input type="text" name="have_mmsid" type="text" readonly required ng-value="lebuy_goods.selected.have_mmsid" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">前端显示标题</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_title" type="text" required ng-value="lebuy_goods.selected.sku_name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品原价</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_price_raw" type="text" readonly required ng-model="lebuy_goods.selected.original_price" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">商品现价</label>
+                                    <div class="col-lg-10">
+                                        <input name="goods_price_now" type="text" readonly required ng-model="lebuy_goods.selected.price" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-repeat="pic_item in lebuy_goods.selected.imgs" ng-init="this.pic[$index] = pic_item">
+                                    <label class="col-lg-2 control-label">商品图片{{$index+1}}</label>
+                                    <div class="col-lg-9">
+                                        <input name="goods_details" tooltip-html-unsafe="<img src='{{this.pic[$index]}}' class='thumbnail' style='width:90px;' />" type="text" data-index="{{'pic_item_'+$index}}" required ng-model="this.pic[$index]" class="form-control" readonly />
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <a class="fa fa-play" tooltip-html-unsafe="<img src='{{this.pic[$index]}}' class='thumbnail' style='width:90px;' />" style="position: absolute;width:27.5px;height:27.5px;top:5px;left:15px;" ng-click="preview(this.pic[$index])"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="" ng-switch-when="VoteSelectItem">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">{{item.title}}</label>
+                                    <div class="col-lg-10">
+                                        <ui-select ng-model="votes.selected" theme="bootstrap">
+                                            <ui-select-match placeholder="选择投票">{{$select.selected.v_title}}</ui-select-match>
+                                            <ui-select-choices repeat="item in votes | filter: $select.search">
+                                                <span ng-bind-html="item.v_title | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                    <div>
+                                        <input type="hidden" id="vote_json" name="vote_json" value="{{votes.selected | json}}">
+                                    </div>
+                                </div>
+                                <div ng-if="votes.selected">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">投票id</label>
+                                        <div class="col-lg-10">
+                                            <!-- <input type="text" disabled class="form-control " ng-model="votes.selected.v_activityid" value="{{votes.selected.v_activityid}}" name="v_activityid" id="vote.v_activityid"> -->
+                                            <input type="text" disabled class="form-control " ng-model="votes.selected.v_groupid" value="{{votes.selected.v_groupid}}" name="v_groupid" id="vote.v_groupid">
+                                            <input type="hidden" disabled class="form-control " ng-model="votes.selected.v_activityid" value="{{votes.selected.v_activityid}}" name="v_activityid" id="vote.v_activityid">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">是否可以重复</label>
+                                        <div class="col-lg-10">
+                                            <input type="hidden" disabled class="form-control" ng-model="votes.selected.v_canRepeat" value="{{votes.selected.v_canRepeat}}" name="v_canRepeat" id="vote.v_canRepeat">
+                                            <input type="text" disabled class="form-control" value="{{votes.selected.v_canRepeat_des}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-lg-2 control-label">是否单选</label>
+                                        <div class="col-lg-10">
+                                            <input type="hidden" disabled class="form-control" ng-model="votes.selected.v_isSingle" value="{{votes.selected.v_isSingle}}" name="v_isSingle" id="vote.v_isSingle">
+                                            <input type="text" disabled class="form-control" value="{{votes.selected.v_isSingle_des}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">投票选项</label>
+                                        <div class="col-lg-10">
+                                            <div class="row">
+                                                <div class="col-xs-6 col-md-3" ng-repeat="option in votes.selected.v_options">
+                                                    <div class="thumbnail">
+                                                        <img src="{{option.v_imgurl}}" alt="{{option.v_name}}">
+                                                        <i ng-if="option.is_right_answer==1" class="fa fa-check text-success" style="font-size: 40px;position: absolute;top:0;right: 0;"></i>
+                                                        <div class="row text-center">
+                                                            <span ng-class="{true:'text-danger'}[option.is_right_answer == 1]">{{option.v_name}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <input type="hidden" disabled class="form-control" ng-model="votes.selected.v_right_answer" value="{{votes.selected.v_right_answer}}" name="v_right_answer" id="vote.v_right_answer">
+                                        </div> 
+                                    </div>    
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">监测信息</label>
+                            <div class="col-lg-10">
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-controller="ImprFormCtrl">
+                        <form class="bs-example form-horizontal ng-pristine form-validation" name="imprForm">
+                            <div class="form-group" ng-controller="MultiExposeCtrl" ng-init="name='impr';">
+                                <label class="col-lg-3 control-label">曝光监测</label>
+                                <div class="col-lg-9">
+                                    <div class="row" ng-repeat="tbox in formTrackings[name]">
+                                        <div class="col-lg-10">
+                                            <input class="form-control" ng-model="this.formTrackings[name][$index].url" type="text">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <a ng-if="$index == 0" type="button" class="btn m-b-xs btn-success" ng-click="addTextBox('impr',this)"><i class="fa fa-plus"></i>
+                                            </a>
+                                            <a ng-if="$index > 0" type="button" class="btn m-b-xs btn-danger" ng-click="removeTextBox('impr',this,$index)"><i
+                                                    class="fa fa-remove"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-3 control-label">点击地址</label>
+                                <div class="col-lg-9">
+                                    <div class="row">
+                                        <div class="col-lg-10">
+                                            <input class="form-control" ng-model="this.formTrackings['clickUrl'].url" type="text">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <a type="button" class="btn m-b-xs btn-success" ng-click="preview(this.formTrackings['clickUrl'].url)"><i
+                                                    class="fa fa-play"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-controller="MultiExposeCtrl" ng-init="this.name = 'events';">
+                                <label class="col-lg-3 control-label">其他监测</label>
+                                <div class="col-lg-9">
+                                    <div class="row" ng-repeat="tbox in formTrackings[name]">
+                                        <div class="col-lg-3">
+                                            <select class="form-control" ng-options="node.value as node.title for node in otherEvents" ng-model="this.formTrackings[name][$index].component">
+                                                <option value="">===不选择===</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <input class="form-control" type="url" placeholder="没有第三方可不填" ng-model="this.formTrackings[name][$index].url">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <a ng-if="$index == 0" type="button" class="btn m-b-xs btn-success" ng-click="addTextBox('events',this)"><i class="fa fa-plus"></i>
+                                            </a>
+                                            <a ng-if="$index > 0" type="button" class="btn m-b-xs btn-danger" ng-click="removeTextBox('events',this,$index)"><i
+                                                    class="fa fa-remove"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-show="showButtons" class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-bg btn-success text-uc m-t-n-xs" ng-click="save()" ng-disabled="form.$invalid"><strong>保存</strong>
+                                </button>
+                                <button type="button" class="btn btn-bg btn-default text-uc m-t-n-xs" ng-click="close()"><strong>关闭</strong></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

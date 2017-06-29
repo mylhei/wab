@@ -1,0 +1,21 @@
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="bg-light lter b-b wrapper-md">
+        <form class="" role="form">
+            <div class="col-md-3 padding-xs-vertical" style="padding-left: 0;">
+                <input type="text" ng-model="searchText" class="form-control" placeholder="直接输入ID或名称">
+            </div>
+            <button ui-sref="app.creative.create" class="btn m-b-xs w-xs btn-info">新  建</button>
+        </form>
+
+</div>
+
+<div class="wrapper-md" ng-controller="TmpListCtrl">
+    <div class="panel panel-default">
+
+        <div class="table-responsive">
+            <div ng-grid="gridOptions" ng_grid_filter_select_column="2" style="min-height:480px"></div>
+        </div>
+    </div>
+    <!--<button ui-sref="app.creative.create" class="btn m-b-xs w-xs btn-info">新  建</button>-->
+</div>

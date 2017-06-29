@@ -1,0 +1,25 @@
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="bg-light lter b-b wrapper-md">
+        <!--<form class="" role="form">
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 padding-xs-vertical" >
+              <div class="input-group">
+                <input type="text" ng-model="searchText" class="form-control" placeholder="输入投票关键词进行搜索">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" name="search" id="btn-goods-search" ng-click="search()">搜索</button>
+                </span>
+              </div>
+            </div>
+        </form>-->
+
+</div>
+
+<div class="wrapper-md"  >
+    <div class="panel panel-default">
+        <div class="table-responsive">
+          <div class="table-responsive" ng-init="list()">
+              <div ng-grid="gridOptions" style="min-height:480px"></div>
+          </div>
+        </div>
+    </div>
+</div>

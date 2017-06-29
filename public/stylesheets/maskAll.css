@@ -1,0 +1,261 @@
+
+#alphaLayer1 {
+ 	height:40px;
+ 	width:100%;
+	background-color:#dddddd;
+}
+#alphaLayer2 {
+ 	height:20px;
+ 	width:100%;
+	background-color:#4D4D4D;
+}
+#alphaLayer3 {
+ 	height:60px;
+ 	width:100%;
+	background-color:#4D4D4D;
+}
+#flashContent {
+	color: #fff;
+	margin-left: 50px;
+}
+#flashContainer {
+	background-color:#333333;
+	text-align: center;
+	height: 480px;
+}
+#callbackContent {
+	text-align:left;
+	margin:0 auto;
+	width:970px;
+	height:400px;
+	background-color:#CCCCCC;
+}
+#callbackContent2 {
+}
+
+.wrapflash{
+	position: relative;
+	display:inline-block;
+	
+	
+}
+#mask{
+	background:rgba(0,0,0,.1) none repeat scroll 0 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top:0;
+	left: 0;
+}
+#dialog{
+	position:absolute;
+	top:0;
+	left:0;
+ 	padding-top: 30px;
+	display:none;
+
+}
+
+
+	li{
+		list-style: outside none none;
+	}
+	ul,li,a,span{
+		/*font-size: 12px;*/
+		padding: 0;
+		margin: 0;
+
+	}
+	.dialogMenu{
+	  	display: none;
+	    height: 400px;
+	    width: 600px;
+	    padding-top: 30px;
+	    position: absolute;
+	    top: 50%;
+	    left: 50%;
+	    margin-top: -215px;
+	    margin-left: -300px;
+	    z-index: 99966;
+	}
+	.navtion{
+		float: left;
+		width: 60px
+
+	}
+	ul.navu{
+		height: 100%;
+    	padding-top: 40px;
+    	
+	}
+	.content{
+		overflow: hidden;
+		padding-right: 15px;
+	}
+
+	.navu li{
+	    background:rgba(1, 198, 28, 0.7) none repeat scroll 0 0;
+	    cursor: pointer;
+	    height: 40px;
+	    line-height: 40px;
+	    margin: 1px 0;
+	    text-align: center;
+	    vertical-align: bottom;
+	    width: 50px;
+	    font-size: 14px;
+	    border-radius: 3px;
+	    color: #fff;
+	    float: right;
+	}
+	.content .center .selected{
+		background: #e1e1e1 url("../image/check.png") no-repeat scroll center center;
+	}
+	.content .center .selected img{
+		opacity: 0.2;
+	}
+	.navu li:hover{	
+		background: #e1e1e1 none repeat scroll 0 0;
+		color: #000;
+		width: 60px;
+		transition:width .5s;
+		-moz-transition:width .5s; /* Firefox 4 */
+		-webkit-transition:width .5s; /* Safari and Chrome */
+		-o-transition:width .5s; /* Opera */
+	}
+	.subMenu {
+		height: 40px;
+		font-size: 16px;
+		padding-left: 35px;
+		background: rgba(2, 183, 254, 0.8) none repeat scroll 0 0;
+		border-radius: 3px;
+		text-align:left;
+		border-radius: 3px;
+
+	}
+	.subMenu a{
+	    color: #fff;
+	    display: inline-block;
+	    font-size: 14px;
+	    height: 40px;
+	    line-height: 40px;
+	    margin: 0 5px;
+	    padding: 0 5px;
+	    text-decoration: none;
+	    width: auto;
+
+    }
+	.subMenu a:hover{
+		background: rgba(1, 108, 208,1) none repeat scroll 0 0;
+
+	}
+	.content .center{
+		background:rgba(250,250,250,1) none repeat scroll 0 0; /* #fff none repeat scroll 0 0;*/
+    	height: 280px;
+    	text-align:left;
+		border: 1px solid #e1e1e1;
+		overflow: hidden;
+    	padding: 3px 0 0;
+	    overflow-x: hidden;
+	    overflow-y: auto;
+		
+	}
+	.content .center ul{
+		width: 100%;
+		height: 100%;
+		margin-left: 15px;
+		box-sizing:content-box;
+	}
+	.content .center li{
+		display: inline-block;
+		margin: 5px 6px;
+		cursor: pointer;
+	}
+	.content .butt{
+		background:#e1e1e1 none repeat scroll 0 0;
+    	height: 50px;
+		padding-left: 30px;
+		text-align:left;
+		border-radius: 3px;
+	}
+	.butt .preview{
+		background: rgba(1, 218, 28, 0.7) none repeat scroll 0 0;
+	    border-radius: 5px;
+	    color: #fff;
+	    display: inline-block;
+	    font-size: 16px;
+	    height: 30px;
+	    line-height: 30px;
+	    text-align: center;
+	    text-decoration: none;
+	    width: 80px;
+	    float: right;
+	    margin: 10px 10px 0 0;
+	    cursor: pointer;
+	}
+	.borderdrag{
+		border: 1px #e1e1e1 dashed;
+	}
+	.butt .disableds{
+		background: #999 none repeat scroll 0 0;
+		border: 1px #e9e9e9 solid; 
+		cursor: default;
+	}
+	.butt input{
+		background: #e1e1e1 none repeat scroll 0 0;
+	    border: 0 none;
+	    height: 30px;
+	    width: 200px;
+	    border-bottom: 1px #999 solid;
+	     margin: 10px 0 0 0;
+	}
+	div.drag {
+		z-index: 99922;
+	}
+	.drag .backs{
+	    background: rgba(0, 0, 0, 0) url("../image/back.png") no-repeat scroll -4px -4px;
+	    bottom: 5px;
+	    height: 40px;
+	    position: absolute;
+	    right: 0;
+	    width: 40px;
+	    z-index: 99933;
+	}
+	.drag .imgClose{
+		background: rgba(0, 0, 0, 0) url("../image/del.png") no-repeat scroll 0 0;
+	    height: 32px;
+	    line-height: 32px;
+	    right: -5px;
+	    top: -5px;
+	    width: 32px;
+	    cursor: pointer;
+	    display: none;
+	}
+	.drag .imgClose:hover{
+		background: rgba(0, 0, 0, 0) url("../image/delh.png") no-repeat scroll 0 0;
+	}
+	a.close{
+		 background: #999 none repeat scroll 0 0;
+	    border: 1px solid #999;
+	    border-radius: 20px;
+	    color: #fff;
+	    font-size: 24px;
+	    height: 36px;
+	    line-height: 38px;
+	    position: absolute;
+	    right: -7px;
+	    text-align: center;
+	    text-decoration: none;
+	    top: 10px;
+	    width: 36px;
+	    cursor: pointer;
+	}
+	a.close:hover{
+		 background: rgba(211,57,31,1); none repeat scroll 0 0;
+		 border: 1px solid  rgba(211,57,31,1);
+	}
+
+	#callbackContent div{
+		padding: 6px;
+
+	}
+	

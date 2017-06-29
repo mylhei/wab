@@ -1,0 +1,96 @@
+<div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">地域定向</label>
+        <div class="radio col-sm-8">
+            <label class="i-checks col-sm-2">
+            <input type="radio" name="area.type" value="1" ng-model="area_type">
+            <i></i>
+            正定向
+        </label>
+            <label class="i-checks col-sm-2">
+            <input type="radio" name="area.type" value="0" ng-model="area_type">
+            <i></i>
+            反定向
+        </label>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-2 control-label">国家</label>
+        <div class="col-sm-2">
+            <div isteven-multi-select input-model="area.countrys" output-model="area.select_country" button-label=" name" item-label=" name" search-property="name" selection-mode="single" tick-property="ticked">
+            </div>
+        </div>
+        <label class="col-sm-1 control-label">省</label>
+        <div class="col-sm-2">
+            <div isteven-multi-select input-model="area.provinces" output-model="area.select_province" button-label="name" item-label="name" search-property="name" selection-mode="single" tick-property="ticked">
+            </div>
+        </div>
+        <label class="col-sm-1 control-label">城市</label>
+        <div class="col-sm-2">
+            <div isteven-multi-select input-model="area.citys" output-model="area.select_city" button-label=" name" item-label=" name" search-property="name" selection-mode="single" tick-property="ticked">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <button  class="btn btn-info" type="button" ng-click="addArea()" ><i class="glyphicon glyphicon-plus"></i>添加地域</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">KA城市</label>
+        <div class="col-sm-2">
+            <div isteven-multi-select input-model="ka_citys" output-model="area.select_ka_city" button-label=" name" item-label=" name" search-property="name"  tick-property="ticked">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <button class="btn btn-info" type="button" ng-click="addKa()" ><i class="glyphicon glyphicon-plus"></i>添加地域</button>
+        </div>
+        <div class="col-sm-2 col-sm-offset-5">
+            <button class="btn" type="button" ng-click="checkAreaResult()" ><i class="glyphicon glyphicon-check"></i>检测定向结果</button>
+        </div>
+        
+    </div>
+    <div class="form-group  " ng-if="out.length > 0">
+        <div class="col-sm-9">
+            <div class="row ">
+                <div class="col-sm-offset-2">
+                    <button class="btn btn-danger" type="button" ng-click="removeSelected()"><i class="fa fa-remove"></i> 删除选中</button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <table class="table table-bordered  col-sm-offset-2">
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <label class="i-checks">
+                                <button type="button" class="btn btn-info" ng-click="selectAllArea()">
+                                全选
+                                </button>
+                            </label>
+                            </div>
+                        </th>
+                        <th>地域id</th>
+                        <th>地域名称</th>
+                        <th>定向类型</th>
+                        <th>删除</th>
+                    </tr>
+                    <tr ng-repeat="area in out track by $index">
+                        <td>
+                            <div class="checkbox">
+                                <label class="i-checks">
+                                <input type="checkbox" ng-checked="area.want2remove" ng-click="toggleArea($index)" value="">
+                                <i></i>
+                            </label>
+                            </div>
+                        </td>
+                        <td>{{area.id}}</td>
+                        <td>{{area.name}}</td>
+                        <td ng-if="area.orient_type == 0"><span class="text-danger">反定向</span></td>
+                        <td ng-if="area.orient_type == 1">正定向</td>
+                        <td><button type="button" class="btn btn-danger" ng-click="removeAreas($index)"><i class="fa fa-remove"></i> 删除</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

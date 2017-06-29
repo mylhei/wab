@@ -1,0 +1,89 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+    <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="forma" class="form-horizontal form-validation">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>活动信息</strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">活动名称</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="form.name" name="uName" required/>
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                                <label ng-show="forma.uName.$dirty && forma.uName.$invalid"><span
+                                        ng-show="forma.uName.$error.required"
+                                        style="vertical-align: super;">请填写活动名称</span></label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">平台</label>
+                                <div class="col-sm-6">
+                                    <select ng-model="form.platform" name="uPlatform" ng-change="onPlatformChanged()"
+                                            class="form-control m-b"
+                                            ng-options="node.id as node.name for node in platform_list" required>
+                                    </select>
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                                <label ng-show="forma.uPlatform.$dirty && forma.uPlatform.$invalid"><span
+                                        ng-show="forma.uPlatform.$error.required"
+                                        style="vertical-align: super;">请填选择模板</span></label>
+
+                            </div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">模版类型</label>
+                                <div class="col-sm-6">
+                                    <select ng-model="form.creative_id" ng-change="onCreativeChanged()"
+                                            name="uCreative_id"
+                                            class="form-control m-b"
+                                            ng-options="node.id as node.id+':'+node.name |limitTo:50 for node in createform_list "
+                                            required>
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                                <label class="control-label" style="font-size: larger;">*</label>
+                                <label ng-show="forma.uCreative_id.$dirty && forma.uCreative_id.$invalid"><span
+                                        ng-show="forma.uCreative_id.$error.required" style="vertical-align: super;">请填选择模板</span></label>
+
+                            </div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">描述</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control ng-pristine ng-untouched ng-valid"
+                                              ng-model="form.description" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                            <div ng-show="showForms" class="form-group">
+                                <label class="col-sm-3 control-label">广告信息</label>
+                                <div class="col-sm-9 col-sm-offset-2">
+                                    <creative-form allow-changed="true"></creative-form>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                        </div>
+                        <footer class="panel-footer text-right bg-light lter">
+                            <!--<span class="label bg-danger center" ng-show="!forma.$invalid">请检查输入的信息!!!</span>-->
+
+                            <button type="button" class="btn btn-default" ui-sref="app.ad.list">返回</button>
+                            <button type="submit" class="btn btn-success" ng-disabled="forma.$invalid || !showForms"
+                                    ng-click="save()">保存
+                            </button>
+                        </footer>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

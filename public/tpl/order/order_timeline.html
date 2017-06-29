@@ -1,0 +1,138 @@
+<!--<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>-->
+<!--<div class="wrapper-md">-->
+    <!--<div class="row">-->
+        <!--<div class="col-sm-12">-->
+                <!--<form name="forma" class="form-horizontal form-validation">-->
+                    <!--<div class="panel panel-default">-->
+                        <!--<div class="panel-body">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label">平台</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<select ng-model="form.platform"-->
+                                            <!--ng-change="onPlatformChanged()"-->
+                                            <!--ng-options="node.id as node.name for node in platform_list"-->
+                                            <!--class="form-control" required>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+
+                            <!--</div>-->
+                            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label">直播流</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<div-->
+                                            <!--isteven-multi-select-->
+                                            <!--input-model="stream_list"-->
+                                            <!--output-model="stream_output"-->
+                                            <!--button-label="name"-->
+                                            <!--item-label="name"-->
+                                            <!--tick-property="ticked"-->
+                                            <!--output-properties="name"-->
+                                            <!--on-close="fClose()"-->
+                                            <!--on-search-change="fSearchChange( data )"-->
+                                    <!--&gt;-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-2">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                    <!--</div>-->
+                <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+
+<div class="hbox hbox-auto-xs hbox-auto-sm">
+    <!-- .col -->
+    <div class="col w-lg bg-light dk b-r bg-auto" id="aside">
+        <div class="wrapper bg b-b">
+            <button class="btn btn-sm btn-success pull-right" ui-toggle-class="timeline-center" target=".timeline">左对齐
+            </button>
+            <h3 class="m-n font-thin">订单时间预览</h3>
+        </div>
+        <div class="wrapper">
+            <form>
+                <div class="form-group">
+                    <label>平台</label>
+                    <select ng-model="form.platform"
+                        ng-change="onPlatformChanged()"
+                        ng-options="node.id as node.name for node in platform_list"
+                        class="form-control" required>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>直播流</label>
+                    <div
+                        isteven-multi-select
+                        input-model="stream_list"
+                        output-model="stream_output"
+                        button-label="name"
+                        item-label="name"
+                        tick-property="ticked"
+                        output-properties="name"
+                        on-close="fClose()"
+                        on-search-change="fSearchChange( data )"
+                        >
+                    </div>
+                </div>
+                <div class="m-t-md m-b-md"><button class="btn btn-sm btn-primary">预览</button></div>
+            </form>
+        </div>
+    </div>
+    <!-- /.col -->
+    <!-- .col -->
+    <div class="col">
+        <div class="wrapper">
+            <ul class="timeline timeline-center">
+                <li class="tl-header">
+                    <div class="btn btn-info">Now</div>
+                </li>
+                <li class="tl-item tl-left">
+                    <div class="tl-wrap b-primary">
+                        <span class="tl-date">04.2014</span>
+                        <div class="tl-content panel padder b-a w-md w-auto-xs">
+                            <span class="arrow left pull-up"></span>
+                            <div class="text-lt m-b-sm">广告名称1</div>
+                            <div class="panel-body pull-in b-t b-light">
+                                <!--<a href="" class="thumb pull-right m-l m-t-xs avatar">-->
+                                    <!--<img src="img/a4.jpg" alt="...">-->
+                                    <!--<i class="on md b-white bottom"></i>-->
+                                <!--</a>-->
+                                <div class="clear">
+                                    <!--<a href="" class="text-primary block m-b-xs">@Mike Mcalidek <i class="icon-twitter"></i></a>-->
+                                    <!--<a href="" class="btn btn-addon btn-sm btn-primary m-t-xs"><i class="fa fa-eye"></i> Follow</a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="tl-item">
+                    <div class="tl-wrap b-primary">
+                        <span class="tl-date">04.2014</span>
+                        <div class="tl-content panel padder b-a w-md w-auto-xs">
+                            <span class="arrow left pull-up"></span>
+                            <div class="text-lt m-b-sm">广告名称2</div>
+                            <div class="panel-body pull-in b-t b-light">
+                                <!--<a href="" class="thumb pull-right m-l m-t-xs avatar">-->
+                                    <!--<img src="img/a4.jpg" alt="...">-->
+                                    <!--<i class="on md b-white bottom"></i>-->
+                                <!--</a>-->
+                                <div class="clear">
+                                    <!--<a href="" class="text-primary block m-b-xs">@Mike Mcalidek <i class="icon-twitter"></i></a>-->
+                                    <!--<a href="" class="btn btn-addon btn-sm btn-primary m-t-xs"><i class="fa fa-eye"></i> Follow</a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="tl-header">
+                    <div class="btn btn-sm btn-default btn-rounded">end</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /.col -->
+</div>

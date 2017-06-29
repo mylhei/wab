@@ -1,0 +1,256 @@
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+<div>
+<div class="row">
+    <div class="col-sm-12">
+        <form name="forma" class="form-horizontal form-validation">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>新增投票</strong>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="v_title" class="col-sm-3 control-label">投票名称</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="v_title" id="v_title" ng-model="form.v_title" placeholder="请输入投票名称" class="form-control" required>
+                        </div>
+                        <label class="control-label text-danger" style="font-size: larger;">*</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            是否单选
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_isSingle" id="v_isSingle1" ng-model="form.v_isSingle"  value="1" ng-checked="true">是
+                            <input type="radio" name="v_isSingle" id="v_isSingle2" ng-model="form.v_isSingle"  value="0" >否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            是否重复                        
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_canRepeat" id="v_canRepeat1" ng-model="form.v_canRepeat"  value="1" ng-checked="true">是
+                            <input type="radio" name="v_canRepeat" id="v_canRepeat2" ng-model="form.v_canRepeat"  value="0" >否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="v_isSingle" class="col-sm-3 control-label">
+                            计算优化                        
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="radio" name="v_optimize" id="v_optimize" ng-model="form.v_optimize"  value="1">是
+                            <input type="radio" name="v_optimize" id="v_optimize" ng-model="form.v_optimize"  value="0"  ng-checked="true">否
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">投票选项</label>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4" ng-repeat="v_option in form.v_options  track by $index">
+                                    <div class="thumbnail" style="height:280px;width: 180px;position: relative;">
+                                        <div style="height: 180px;"  class="img-thumbnail">
+                                        <img src="{{v_option.v_imgurl}}"  class="img-responsive center-block">
+                                        </div>
+                                        <i ng-if="v_option.is_right_answer=='1'" class="fa fa-check text-success" style="font-size: 40px;position: absolute;top: 0;right: 0;"></i>
+                                        <div class="caption text-center">
+                                            <div ng-class="{true:'text-danger',false:'text-info'}[v_option.is_right_answer=='1']">{{v_option.v_name}}</div>
+                                            <button ng-click="remove_v_option($index)" class="btn btn-danger">移除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix visible-xs-block"></div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="thumbnail center-block">
+                                        <button class="btn btn-info" ng-click="open_file_upload_modal()">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </div>
+                                    
+                                    <!--上传图片模态框-->
+                                    <!--<div class="modal fade" id="file_modal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">上传图片</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="hbox hbox-auto-xs hbox-auto-sm"  nv-file-drop="" uploader="uploader" filters="queueLimit, customFilter">
+                                                        <div class="col w-lg bg-light b-r bg-auto">
+                                                            <div class="wrapper-md dker b-b">
+                                                                <h3 class="m-n font-thin">选择文件</h3>
+                                                            </div>
+                                                            <div class="wrapper-md">
+                                                                <p class="m-t-md">选择文件,或将文件拖动到下框中</p>
+                                                                <input type="file" nv-file-select="" uploader="uploader" />
+                                                                <br>
+                                                                <div ng-show="uploader.isHTML5" class="m-b-md">
+                                                                    <div nv-file-drop="" uploader="uploader" options="{ url: '/upload' }">
+                                                                        <div nv-file-over="" uploader="uploader" over-class="b-danger" class="b-a b-2x b-dashed wrapper-lg lter text-center">
+                                                                            拖动文件到这里上传
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="wrapper-md bg-light dk b-b">
+                                                                <span class="pull-right m-t-xs">上传队列长度: <b class="badge bg-info">{{ uploader.queue.length }}</b></span>
+                                                                <h3 class="m-n font-thin">上传队列</h3>
+                                                            </div>
+                                                            <div class="wrapper-md">
+                                                                <table class="table bg-white-only b-a">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th width="50%">文件名称</th>
+                                                                        <th ng-show="uploader.isHTML5">文件大小</th>
+                                                                        <th ng-show="uploader.isHTML5">上传进度</th>
+                                                                        <th>状态</th>
+                                                                        <th>操作</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr ng-repeat="item in uploader.queue">
+                                                                        <td><strong>{{ item.file.name }}</strong></td>
+                                                                        <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                                                        <td ng-show="uploader.isHTML5">
+                                                                            <div class="progress progress-sm m-b-none m-t-xs">
+                                                                                <div class="progress-bar bg-info" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <span ng-show="item.isSuccess" class="text-success"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                            <span ng-show="item.isCancel" class="text-warning"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                                                            <span ng-show="item.isError" class="text-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                                                                        </td>
+                                                                        <td nowrap>
+                                                                            <button type="button" class="btn btn-default btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                                                                                上传
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-default btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                                                                取消
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-default btn-xs" ng-click="item.remove()">
+                                                                                移除
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <div>
+                                                                    <div>
+                                                                        <p>上传进度:</p>
+                                                                        <div class="progress bg-light dker" style="">
+                                                                            <div class="progress-bar progress-bar-striped bg-info" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="button" class="btn btn-addon btn-success" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                                                                        <i class="fa fa-arrow-circle-o-up"></i> 全部上传
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-addon btn-danger" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                                                                        <i class="fa fa-trash-o"></i> 全部移除
+                                                                    </button>
+
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <div class="text-center center-block">
+                                                    <button type="button" class="btn btn-info" ng-click="close_file_upload_modal()">确定</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+
+
+                                    
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="panel-footer text-right bg-light lter">
+                    <span class="label bg-danger center" ng-show="forma.$invalid">请检查输入的信息!!!</span>
+                    <button type="submit" class="btn btn-success" ng-disabled="forma.$invalid" ng-click="save()">保存</button>
+                </footer>
+            </div>
+        </form>
+        <div class="modal fade" id="file_modal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+            <form id="modal_form">
+
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">添加投票选项</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="v_name" class="col-sm-3 control-label">选项名称<span class="text-danger">*</span></label>
+                            <div class="col-sm-6 input-group">
+                                <input type="text" name="v_name" id="v_name" ng-model="form.v_options.v_name" placeholder="请输入投票选项名称" class="form-control">
+                            </div>
+                        </div>
+
+                        <div ng-controller="FileUploadSimpleCtrl">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">选项图片</label>
+                            <div class="col-sm-6 input-group" >
+                                <input type="text" class="form-control" data-index="v_imgurl" placeholder="请填入选项的图片地址" ng-model="form.v_options.v_imgurl" name="v_imgurl" id="v_imgurl" />
+                                <div class="input-group-addon">
+                                    <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/jpg,image/png,image/gif" >
+                                    <i class="fa fa-upload"></i>
+                                    </div>
+                                    <input type="file" ng-model="form.v_options._v_imgurl" ng-click="select_file('v_imgurl')" nv-file-select="" uploader="uploader" style="width:27.5px;opacity: 0;margin-top:-15px;" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/jpg,image/png,image/gif">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div ng-controller="FileUploadSimpleCtrl">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">选项小图标</label>
+                            <div class="col-sm-6 input-group" >
+                                <input type="text" class="form-control" data-index="v_icon" placeholder="请填入选项小图标" ng-model="form.v_options.v_icon" name="v_icon" id="v_icon" />
+                                <div class="input-group-addon">
+                                    <div nv-file-over="" uploader="uploader" over-class="b-danger" accept="image/jpg,image/png,image/gif" >
+                                    <i class="fa fa-upload"></i>
+                                    </div>
+                                    <input type="file" ng-model="form.v_options._v_icon" ng-click="select_file('v_icon')" nv-file-select="" uploader="uploader" style="width:27.5px;opacity: 0;margin-top:-15px;" over-class="b-danger" ng-file-select="onFileSelect($files)" accept="image/jpg,image/png,image/gif">
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_right_answer" class="col-sm-3 control-label">是否正确答案<span class="text-danger">*</span></label>
+                            <div class="col-sm-6 input-group">
+                                <input type="radio" name="is_right_answer" id="is_right_answer1"  ng-value="1" value="1">是
+                                <input type="radio" name="is_right_answer" id="is_right_answer2"  ng-value="0" value="0" ng-checked="true">否
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label for="v_icon" class="col-sm-3 control-label">选项小图标</label>
+                            <div class="col-sm-6 input-group">
+                                <input type="file" name="v_icon" id="v_icon" ng-model="form.v_options.v_icon" placeholder="请输入投票选项名称" class="form-control">
+                            </div>
+                        </div>-->
+                    </div>
+                    <div class="modal-footer">
+                    <div class="text-center center-block">
+                        <button type="button" class="btn btn-info" ng-click="close_file_upload_modal()">确定</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h3 class="modal-title">请选择!</h3>
+    <div>
+        <input type="text" class="form-control" ng-model="selectFilter" placeholder="输入关键词进行过滤">
+    </div>
+</div>
+<div class="modal-body">
+    <div class="checkbox" ng-repeat="item in items | filter : selectFilter">
+      <label class="i-checks">
+        <input type="checkbox" ng-click="toggleSelect($index)" value="{{item.id}}">
+        <i></i>
+        {{item.name}}
+      </label>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+</div>

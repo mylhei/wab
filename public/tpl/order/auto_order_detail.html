@@ -1,0 +1,228 @@
+
+<link rel="stylesheet" href="stylesheets/maskAll.css">
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+    <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="forma" id="forma" class="form-horizontal form-validation">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+
+                            <div id="flashContainer">
+                                <div class="wrapflash" id="wrapflash" >
+                                    <div id="flashContent" style="margin-top:200px;">
+                                        由于播放器限制,现在还不能精确定位视频时间轴,请点击播放,重新打点
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="form-group" ng-if="showTimeLine">
+                                <label class="col-sm-2 control-label">标签</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control" ng-model="ad_positions.selectedTag">  
+                                        <option value="">--请选择--</option>  
+                                        <option ng-repeat="tag in ad_positions.tags" >{{tag}}</option> 
+                                    </select>
+                                </div>
+                                
+                                <!--由于这里使用了ng-if因此，要使用两个parent-->
+                                <point-time-line  filtertag="{{ad_positions.selectedTag}}" in="{{ad_positions}}" videotime="{{video_time}}" out="$parent.$parent.selectedAdPosition"></point-time-line>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-2 control-label">单集定向</label>
+                                <div class="col-sm-4">
+                                    <div
+                                            isteven-multi-select
+                                            selection-mode="single"
+                                            input-model="vid_list"
+                                            output-model="vid_output"
+                                            button-label="name"
+                                            item-label="name"
+                                            tick-property="ticked"
+                                            output-properties="id parent_id"
+                                            on-close="fClose('video')"
+                                            on-search-change="fSearchChange( data , 'video')"
+                                    >
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <a ng-click='play()' class="btn btn-info">播放</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" ng-model="form.orderType" ng-init="form.orderType=1">
+                                <label class="col-sm-2 control-label">订单名称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" placeholder="请填写订单名称" ng-model="form.name" required/>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                                <label  ng-show="forma.form.name.$dirty && forma.form.name.$invalid"><span ng-show="forma.form.name.$error.required"  style="vertical-align: super;">请填写订单名称</span></label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">平台</label>
+                                <div class="col-sm-4">
+                                    <select ng-model="form.platform"
+                                            ng-change="onPlatformChanged()"
+                                            ng-options="node.id as node.name for node in platform_list"
+                                            class="form-control" required>
+                                    </select>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                            </div>
+                            <input type="hidden" ng-model="form.targetType" ng-init="form.targetType='vod'">
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择广告</label>
+                                <div class="col-sm-4">
+                                    <select id="ad_select" class="form-control" ng-model="form.ad_id"
+                                            ng-options="node.id as node.id+' : '+node.name |limitTo:20 for node in ad_list"
+                                            required></select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <script type="text/ng-template" id="order_adform.html">
+                                        <div ng-include="'tpl/order/order_adform.html'"></div>
+                                    </script>
+                                    <button class="btn m-b-xs w-xs btn-default" ng-click="open('lg')">新建广告</button>
+                                    <button class="btn m-b-xs w-xs btn-default" ng-click="open('lg',form.ad_id)">查看广告
+                                    </button>
+                                    <button class="btn m-b-xs w-xs btn-default" ng-disabled="true">线上预览</button>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group" >
+                                <label  class="col-sm-2 control-label">展示位置</label>
+                                <div class="col-sm-6">
+                                        <div class="input-group row" >
+                                          <span class="input-group-addon">x=</span>
+                                          <input type="text" class="form-control" placeholder="x坐标百分比" style="z-index:0;" aria-describedby="basic-addon1" id="coordinate_x" ng-model="form.coordinate.x">
+                                          <div class="input-group-addon">%</div>
+                                          <span class="input-group-addon">y=</span>
+                                          <input type="text" class="form-control" placeholder="y坐标百分比" style="z-index:0;" aria-describedby="basic-addon1" id="coordinate_y" ng-model="form.coordinate.y">
+                                          <div class="input-group-addon">%</div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">时间轴时间</label>
+                                <div  class="col-sm-2">
+                                    <input data-postfix="秒" ui-jq="TouchSpin" type="text" style="z-index: 0;"
+                                           class="form-control" data-min='0' data-max="9999" data-step="1"
+                                           data-decimals="0" data-verticalbuttons="true"
+                                           data-verticalupclass="fa fa-caret-up"
+                                           ng-model="form.offset"
+                                           required
+                                           data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                                <label class="col-sm-2 control-label">持续时长</label>
+                                <div class="col-sm-2">
+                                    <input data-postfix="秒" ui-jq="TouchSpin" type="text" style="z-index:0;"
+                                           class="form-control" data-min='1' data-max="9999" data-step="1"
+                                           data-decimals="0" data-verticalbuttons="true"
+                                           data-verticalupclass="fa fa-caret-up"
+                                           ng-model="form.duration"
+                                           required
+                                           data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <input type="hidden" ng-model="form.deliverType" ng-init="form.deliverType='auto'">
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <div class="input-group date form_datetime">
+                                        <input ng-if="form.targetType=='live'" class="form-control" style="z-index: -1;"
+                                               datetime-picker future-only tooltip="必须填写一个未来的时间"
+                                               tooltip-trigger="mouseenter" ng-model="form.startTime" type="text"
+                                               date-format="yyyy-MM-dd HH:mm:ss" required>
+                                        <input ng-if="form.targetType=='vod' || 'vod_p'" class="form-control" style="z-index: 0;"
+                                               datetime-picker tooltip="必须填写一个未来的时间"
+                                               tooltip-trigger="mouseenter" ng-model="form.startTime" type="text"
+                                               date-format="yyyy-MM-dd HH:mm:ss" required>
+
+                                    </div>
+                                </div>
+                                <label ng-if="form.deliverType=='auto'" style="text-align: left;margin-left: -25px;"
+                                       class="col-sm-2 control-label text-danger" ng-show="startTimeInValid">*必须填写一个未来的时间</label>
+                                <label ng-if="form.targetType == 'vod' && form.deliverType=='auto'" class="col-sm-2 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="form.targetType == 'vod' && form.deliverType=='auto'" class="input-group date form_datetime">
+                                        <input class="form-control" datetime-picker future-only style="z-index: 0;" tooltip="必须填写一个未来的时间"
+                                               tooltip-trigger="mouseenter" ng-model="form.endTime" type="text"
+                                               date-format="yyyy-MM-dd HH:mm:ss" required>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">会员定向</label>
+                                <div class="radio col-sm-8">
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="0" ng-model="form.member">
+                                        <i></i>
+                                        全部
+                                    </label>
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="1" ng-model="form.member">
+                                        <i></i>
+                                        非会员
+                                    </label>
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="2" ng-model="form.member">
+                                        <i></i>
+                                        会员
+                                    </label>
+                                </div>
+                               
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            
+                            <area-select areas="{{area.all}}" out="form.areas"></area-select>
+                            
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-4">
+                                    <textarea placeholder="描述,非必填" ng-model="form.description" class="form-control"
+                                              cols="30" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-6 col-sm-offset-2">
+                                    <span class="alert" ng-show="form.deliverType=='manual'">您的投放需要您手动控制上线!</span>
+                                    <span class="alert" ng-show="form.deliverType=='auto'">您的投放将在{{form.startTime | date:'MM-dd HH:mm:ss' }}上线</span>
+                                </div>
+                            </div>
+
+                            <footer class="panel-footer">
+                                <div class="col-sm-3 text-right">
+                                    <button type="submit" class="btn btn-success"
+                                            ng-click="save()">保存
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-4">
+                                    <input type="button" ui-sref="app.order.list" class="btn btn-default" value="取消"/>
+                                </div>
+                            </footer>
+                            <div class="form-group">
+                                <pre style="background: none;border:none">
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

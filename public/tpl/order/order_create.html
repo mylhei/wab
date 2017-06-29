@@ -1,0 +1,208 @@
+<!--<div class="bg-light lter b-b wrapper-md">-->
+<!--<h1 class="m-n font-thin h3">创意模版</h1>-->
+<!--</div>-->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="wrapper-md">
+    <div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form name="forma" class="form-horizontal form-validation">
+                    <div class="panel panel-default">
+                        <!--<div class="panel-heading">-->
+                        <!--<strong>订单信息</strong>-->
+                        <!--</div>-->
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">订单名称</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" placeholder="请填写订单名称" ng-model="form.name" required/>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+                                <label ng-show="forma.form.name.$dirty && forma.form.name.$invalid"><span ng-show="forma.form.name.$error.required"  style="vertical-align: super;">请填写订单名称</span></label>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">平台</label>
+                                <div class="col-sm-4">
+                                    <select ng-model="form.platform" ng-change="onPlatformChanged()" ng-options="node.id as node.name for node in platform_list" class="form-control" required>
+                                    </select>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">定向条件</label>
+                                <div class="col-sm-4">
+                                    <div class="btn-group m-r" ng-init="form.targetType = 'live'">
+                                        <label class="btn btn-default" ng-model="form.targetType" btn-radio="'live'" style="z-index: 0;">直播</label>
+                                        <label class="btn btn-default" ng-model="form.targetType" btn-radio="'vod'" style="z-index: 0;">点播</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group" ng-if="form.targetType=='live'">
+                                <label class="col-sm-2 control-label">直播流</label>
+                                <div class="col-sm-2">
+                                    <select name="target_type" id="target_type" ng-model="form.target_type" ng-init="form.target_type='live'" class="form-control">
+                                        <option value="live">name</option>
+                                        <option value="live_id">id</option>
+                                        <option value="id2name">id => name</option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-sm-3" ng-if="form.target_type=='live'">
+                                    <div isteven-multi-select input-model="stream_list" output-model="stream_output" button-label="name" item-label="name" tick-property="ticked" output-properties="name" on-close="fClose('stream')" on-search-change="fSearchChange( data ,'stream')" popover-placement="right"
+                                        popover="On the Top!" popover-trigger="hover">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" ng-if="form.target_type=='live_id'">
+                                    <input type="text" ng-model="form.streams" class="form-control" placeholder="直播流id">
+                                </div>
+                                <div class="col-sm-3" ng-if="form.target_type=='id2name'">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control " ng-model="form.stream_id" placeholder="请输入直播流id">
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="getStreamNamesById()">获取名称</button>
+                                      </span>
+                                    </div>
+                                    <!-- /input-group -->
+                                    <label class="control-label">{{form.streams}}</label>
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+
+                            </div>
+
+
+                            <div class="form-group" ng-if="form.targetType=='vod'">
+                                <div ng-hide="vid_list && vid_list.length > 0">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">专辑定向</label>
+                                        <search-select url='/api/get_albums/' out-model='$parent.aid_list' placeholder="请输入专辑关键词进行查询"></search-select>
+                                    </div>
+                                </div>
+                                <div ng-hide="aid_list && aid_list.length > 0">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">单集定向</label>
+                                        <search-select url='/api/get_videos/' out-model='$parent.vid_list' placeholder="请输入单集关键词进行查询"></search-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">选择广告</label>
+                                <div class="col-sm-4">
+                                    <div isteven-multi-select input-model="ad_list" output-model="form.ad_selected" button-label="id : name" item-label="id : name" search-property="name" selection-mode="single" tick-property="ticked">
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-5">
+                                    <script type="text/ng-template" id="order_adform.html">
+                                        <div ng-include="'tpl/order/order_adform.html'"></div>
+                                    </script>
+                                    <button class="btn m-b-xs w-xs btn-default" type="button" ng-click="open('lg')">新建广告</button>
+                                    <button class="btn m-b-xs w-xs btn-default" type="button" ng-click="open('lg',form.ad_id)">查看广告
+                                    </button>
+                                    <button class="btn m-b-xs w-xs btn-default" ng-disabled="true">线上预览</button>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{form.targetType=='live'?'投放方式':'时间轴时间' }}</label>
+                                <div ng-if="form.targetType=='live'" class="col-sm-3">
+                                    <div class="btn-group m-r" ng-init="form.deliverType = 'auto'">
+                                        <label class="btn btn-default" style="z-index: 0;" ng-model="form.deliverType" btn-radio="'auto'">自动投放</label>
+                                        <label class="btn btn-default" style="z-index: 0;" ng-model="form.deliverType" btn-radio="'manual'" ng-disabled="form.targetType=='vod'">手动上线</label>
+                                    </div>
+                                </div>
+                                <div ng-if="form.targetType=='vod'" class="col-sm-2">
+                                    <input data-postfix="秒" ui-jq="TouchSpin" type="text" style="z-index: 0;" class="form-control" data-min='0' data-max="9999" data-step="1" data-decimals="0" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up" ng-model="form.offset" required
+                                        data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                                <label class="col-sm-1 control-label">持续时长</label>
+                                <div class="col-sm-2">
+                                    <input data-postfix="秒" ui-jq="TouchSpin" type="text" class="form-control" data-min='5' data-max="9999" data-step="1" data-decimals="0" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up" ng-model="form.duration" required data-verticaldownclass="fa fa-caret-down">
+                                </div>
+                                <label class="control-label" style="font-size: larger;color:#f00">*</label>
+
+                            </div>
+
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label ng-if="form.deliverType=='auto'" class="col-sm-2 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="form.deliverType=='auto'" class="input-group date form_datetime">
+                                        <input ng-if="form.targetType=='live'" class="form-control" style="z-index: 0;" datetime-picker future-only tooltip="必须填写一个未来的时间" tooltip-trigger="mouseenter" ng-model="form.startTime" type="text" date-format="yyyy-MM-dd HH:mm:ss" required>
+                                        <input ng-if="form.targetType=='vod'" class="form-control" style="z-index: 0;" datetime-picker tooltip="必须填写一个未来的时间" tooltip-trigger="mouseenter" ng-model="form.startTime" type="text" date-format="yyyy-MM-dd HH:mm:ss" required>
+
+                                    </div>
+
+                                </div>
+                                <label ng-if="form.deliverType=='auto'" style="text-align: left;margin-left: -25px;" class="col-sm-2 control-label text-danger" ng-show="startTimeInValid">*必须填写一个未来的时间</label>
+                                <label ng-if="form.targetType == 'vod' && form.deliverType=='auto'" class="col-sm-2 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <div ng-if="form.targetType == 'vod' && form.deliverType=='auto'" class="input-group date form_datetime">
+                                        <input class="form-control" datetime-picker future-only style="z-index: 0;" tooltip="必须填写一个未来的时间" tooltip-trigger="mouseenter" ng-model="form.endTime" type="text" date-format="yyyy-MM-dd HH:mm:ss" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label  class="col-sm-2 control-label">会员定向</label>
+                                <div class="radio col-sm-8">
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="0" ng-model="form.member">
+                                        <i></i>
+                                        全部
+                                    </label>
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="1" ng-model="form.member">
+                                        <i></i>
+                                        非会员
+                                    </label>
+                                    <label class="i-checks col-sm-2">
+                                        <input type="radio" name="member" value="2" ng-model="form.member">
+                                        <i></i>
+                                        会员
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <area-select areas="{{area.all}}" out="form.areas"></area-select>
+                            <div class="line line-dashed b-b line-lg pull-in"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">描述</label>
+                                <div class="col-sm-4">
+                                    <textarea placeholder="描述,非必填" ng-model="form.description" class="form-control" cols="30" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-6 col-sm-offset-2">
+                                    <span class="alert" ng-show="form.deliverType=='manual'">您的投放需要您手动控制上线!</span>
+                                    <span class="alert" ng-show="form.deliverType=='auto'">您的投放将在{{form.startTime | date:'MM-dd HH:mm:ss' }}上线</span>
+                                </div>
+                            </div>
+
+                            <footer class="panel-footer">
+                                <div class="col-sm-3 text-right">
+                                    <button type="submit" class="btn btn-success" ng-click="save()">保存
+                                    </button>
+                                </div>
+                                <div class="col-sm-offset-4">
+                                    <input type="button" ui-sref="app.order.list" class="btn btn-default" value="取消" />
+                                </div>
+                            </footer>
+                            <div class="form-group">
+                                <pre style="background: none;border:none">
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

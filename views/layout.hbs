@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="app" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="app" class="no-js"> <!--<![endif]-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{title}}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="stylesheets/all.min.css?{{Statics_Ver}}" type="text/css" />
+    <!--<link rel="stylesheet" href="stylesheets/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/animate.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/simple-line-icons.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/font.css" type="text/css" />
+    <link rel="stylesheet" href="stylesheets/app.css" type="text/css" />
+    <link rel="stylesheet" href='components/angularjs-datetime-picker/angularjs-datetime-picker.css'>
+    <link rel="stylesheet" href='components/isteven-multi-select/isteven-multi-select.css'>
+    <link rel="stylesheet" href='vendor/modules/angucomplete/angucomplete.css'>-->
+</head>
+<body ng-controller="AppCtrl">
+<alert class="center text-center top " type="warning" close="closeNavigatorCompatibility(this)" ng-show="showNavigatorCompatibility">系统检测到你使用了不兼容的浏览器,请使用Chrome,Firefox浏览器访问.</alert>
+<base href="/">
+{{{body}}}
+<toaster-container
+        toaster-options="{'position-class': 'toast-top-right', 'close-button':true,'body-output-type':'trustedHtml'}"></toaster-container>
+<div class="app" id="app"
+     ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}"
+     ui-view></div>
+<script src="javascripts/dist/all.min.js?{{Statics_Ver}}"></script>
+
+<!-- toaster directive
+<script src="components/jquery/dist/jquery.js"></script>
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-route/angular-route.js"></script>
+<script src="components/angular-animate/angular-animate.js"></script>
+<script src="components/angular-cookies/angular-cookies.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/angular-sanitize/angular-sanitize.js"></script>
+<script src='components/angularjs-datetime-picker/angularjs-datetime-picker.js'></script>
+<script src='components/isteven-multi-select/isteven-multi-select.js'></script>
+<script src="components/angular-touch/angular-touch.js"></script>
+<script src="vendor/modules/angucomplete/angucomplete.js"></script>
+&lt;!&ndash; Vendor &ndash;&gt;
+<script src="components/angular-ui-router/angular-ui-router.js"></script>
+<script src="components/ngstorage/ngStorage.js"></script>
+
+&lt;!&ndash; bootstrap &ndash;&gt;
+<script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+&lt;!&ndash; lazyload &ndash;&gt;
+<script src="components/oclazyload/ocLazyLoad.js"></script>
+
+
+&lt;!&ndash; App &ndash;&gt;
+<script src="javascripts/app.js"></script>
+<script src="javascripts/config.js"></script>
+<script src="javascripts/config.lazyload.js"></script>
+<script src="javascripts/config.router.js"></script>
+<script src="javascripts/main.js"></script>
+<script src="javascripts/services/ui-load.js"></script>
+<script src="javascripts/filters/fromNow.js"></script>
+<script src="javascripts/directives/setnganimate.js"></script>
+<script src="javascripts/directives/ui-butterbar.js"></script>
+<script src="javascripts/directives/ui-focus.js"></script>
+<script src="javascripts/directives/ui-fullscreen.js"></script>
+<script src="javascripts/directives/ui-jq.js"></script>
+<script src="javascripts/directives/ui-module.js"></script>
+<script src="javascripts/directives/ui-nav.js"></script>
+<script src="javascripts/directives/ui-scroll.js"></script>
+<script src="javascripts/directives/ui-shift.js"></script>
+<script src="javascripts/directives/ui-toggleclass.js"></script>
+<script src="javascripts/directives/ui-validate.js"></script>
+<script src="javascripts/controllers/bootstrap.js"></script>
+<script src="vendor/libs/socket.io-1.2.0.js"></script>-->
+
+</body>
+</html>

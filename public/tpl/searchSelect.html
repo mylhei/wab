@@ -1,0 +1,51 @@
+<div>
+    <script type="text/ng-template" id="searchSelectModal">
+        <div style="max-height:720px;">
+            <div class="modal-header">
+                <h3 class="modal-title">请选择!</h3>
+                <div>
+                    <input type="text" class="form-control" ng-model="selectFilter" placeholder="输入关键词进行过滤">
+                </div>
+            </div>
+            <div class="modal-body" style="max-height:550px; overflow-y:auto;">
+                <div class="rom">
+
+                <div class="checkbox col-sm-3" ng-repeat="item in items | filter : selectFilter | filter:{name:selectFilter}">
+                    <label class="i-checks">
+                <input type="checkbox" ng-click="toggleSelect(item.id)" value="{{item.id}}">
+                <i></i>
+                {{item.name}}
+              </label>
+                </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+                <button class="btn btn-primary" ng-click="ok()">OK</button>
+            </div>
+        </div>
+    </script>
+    <div class="row">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input type="text" ng-model="key" placeholder="{{placeholder}}" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="openModal()">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="outModel.length > 0">
+            <div class="col-sm-8 col-sm-offset-2">
+                <table class="table table-striped b-t b-light">
+                    <tr ng-repeat="item in outModel">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td><button ng-click="removeFromSelected($index)"><i class="fa fa-times text-danger text"></i></button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

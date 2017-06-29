@@ -1,0 +1,23 @@
+/**
+ * Created by leiyao on 16/4/28.
+ */
+
+{
+  "apps": [
+    {
+      "name": "wab_soldier",
+      "script": "ExternalTools/Soldier/Job.js",
+      "env": {
+        "PORT": 3000,
+        "NODE_ENV": "production"
+      },
+      "log_date_format": "YYYY-MM-DD HH:mm:SS",
+      "error_file": "/letv/logs/wab/wab-soldier-err.log",
+      "out_file": "/letv/logs/wab/wab-soldier-out.log",
+      "pid_file": "/letv/logs/wab/wab-soldier.pid",
+      "exec_mode": "cluster_mode",
+      "instances": 1,
+      "watch": false
+    }
+  ]
+}

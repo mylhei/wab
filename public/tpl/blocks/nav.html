@@ -1,0 +1,253 @@
+<!-- list -->
+<ul class="nav" ng-show="userPermission(1)">
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span translate="aside.nav.HEADER">模版资源</span>
+    </li>
+
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="glyphicon glyphicon-edit"></i>
+            <span translate="">模板管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.creative.create">
+                    <span>新建模板</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.creative.list">
+                    <span>模版列表</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+</ul>
+
+<ul class="nav" ng-show="userPermission(4)">
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span translate="aside.nav.HEADER">商品资源</span>
+    </li>
+
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="glyphicon glyphicon-edit"></i>
+            <span translate="">阿里商品管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.goods.create">
+                    <span>导入阿里商品</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.goods.list">
+                    <span>阿里商品列表</span>
+                </a>
+            </li>
+        </ul>
+        
+    </li>
+    <li ui-sref-active="active">
+        <a class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="glyphicon glyphicon-edit"></i>
+            <span translate="">大屏商品管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.lebuy.list">
+                    <span>大屏商品列表</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+</ul>
+
+<ul class="nav" ng-show="userPermission(4)">
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span translate="aside.nav.HEADER">投票管理</span>
+    </li>
+
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="glyphicon glyphicon-edit"></i>
+            <span translate="">投票管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.vote.create">
+                    <span>新增投票</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.vote.list">
+                    <span>投票列表</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+</ul>
+
+<ul class="nav" ng-show="userPermission(2)">
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span>资源管理</span>
+    </li>
+
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="fa fa-shopping-cart"></i>
+            <span translate="">活动管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.ad.create">
+                    <span>新建活动</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.ad.list">
+                    <span>活动列表</span>
+                </a>
+            </li>
+            <li ui-sref-active="active" ng-show="userPermission(-1)">
+                <a ui-sref="app.ad.push">
+                    <span>一键推送</span>
+                </a>
+            </li>
+        </ul>
+
+    </li>
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="glyphicon glyphicon-tags"></i>
+            <span translate="">广告位管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.adp.list">
+                    <span>广告位列表</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.adp.detail">
+                    <span>详情</span>
+                </a>
+            </li>
+        </ul>
+
+    </li>
+</ul>
+<ul class="nav" ng-show="userPermission(2)">
+
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span>订单资源</span>
+    </li>
+
+    <li ui-sref-active="active">
+        <a class="auto">
+             <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+            <i class="glyphicon glyphicon-list icon"></i>
+            <span translate="">订单管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.order.create">
+                    <span>新建订单</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.order.visual_create">
+                    <span>可视化打点</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.order.auto_create">
+                    <span>智能打点</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.order.list">
+                    <span>订单列表</span>
+                </a>
+            </li>
+            <li ui-sref-active="active" ng-show="userPermission(-1)">
+                <a ui-sref="app.order.push">
+                    <span>一键推送</span>
+                </a>
+            </li>
+            <!-- <li ui-sref-active="active">
+                 <a ui-sref="app.order.timeline">
+                     <span>订单树</span>
+                 </a>
+             </li>-->
+
+            <!--<li ui-sref-active="active">-->
+                <!--<a ui-sref="app.order.draft">-->
+                    <!--<span>草稿</span>-->
+                <!--</a>-->
+            <!--</li>-->
+        </ul>
+
+    </li>
+</ul>
+
+<ul class="nav">
+
+    <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+        <span>报表资源</span>
+    </li>
+    <li ui-sref-active="active">
+        <a ui-sref="app.report">
+            <i class="glyphicon glyphicon-signal"></i>
+            <span translate="">数据统计</span>
+        </a>
+    </li>
+</ul>
+<!--<ul class="nav" ng-show="userPermission(-1)">-->
+
+    <!--<li class="line dk"></li>-->
+
+    <!--<li class="hidden-folded padder m-t m-b-sm text-muted text-xs">-->
+        <!--<span translate="">用户管理</span>-->
+    <!--</li>-->
+
+
+    <!--<li ui-sref-active="active">-->
+        <!--<a ui-sref="app.user">-->
+            <!--<i class="icon-user icon text-success-lter"></i>-->
+            <!--<span translate="">管理员</span>-->
+        <!--</a>-->
+    <!--</li>-->
+
+<!--</ul>-->
+<!-- / list -->
